@@ -1,58 +1,62 @@
 #Hangman Project 
 
-#Prepare a dictionary of words to choose from and save it in a txt file (one column) and save it in the project directory
-#Read the word list from your program.
-#Choose a random element from the list. Hint: You may want to check sample() and sample.int()  functions. There are many different ways of doing this. You are welcome to experiment.
-#Inform the user on the length of the secret word. Hint: You may test nchar()
-#Inform the user about the number of wrong guesses/tries allowed. You decide on the rule here and implement it. Please comment your code appropriately.
-#Ask for user input. The user is expected to enter one character only, check for this.
-#Optional; check if the character is a letter
-#Optional: make sure that both lower and upper case letters are acceptable and treated as equivalent
-#Check to see if the user input is in the secret word.
-#If yes, notify user and ask for next letter
-#If not, notify user.
-#If user has not exhausted the available tries, ask for the next letter.
-#If tries are exhausted, notify user that they’ve lost. Reveal secret and exit.
-#Make sure that your code never goes into an infinite loop, and always manages to exit gracefully (ie without throwing an error)
-#Always notify the user about the correct letters/wrong letters, remaining tries.
-
 allword<- unlist(read.csv("Words.txt"))
+#Reading the dictionary file that is stored in the same folder/repo
+#sample() cannot process list as an input we therefore had to unlist the dictionary
 
 word <- sample(allword,1)
+#choosing 1 word from the dictionary that we just made into a vector 
 
 split_w <- unlist(strsplit(word, ""))
-
-split_g<- replace(split_w, 1:length_w, "_")
+#The word is then separated into a string of characters with strsplit() 
+#strsplit() gives a list as an output but I don't like that, it makes subsequent design difficult
+#So i unlisted it :)
 
 length_w <- length(split_w)
+#The length of split_w that is required for the subsequent replace()
 
-W_display <- c()
+split_g<- replace(split_w, 1:length_w, "_")
+#g stands for game, in oppose to w which stands for words. 
+#I am replacing each character in split_g with a _ to be displayed during the game. 
 
-for (i in 1:length_w){
-  W_display <- paste(W_display, "_")
-}
 
 cat("Welcome to Hangman! 
 For each round you get to make seven unsuccessful attempt
-If you are unbale to guess the word before using up all seven attemtps the men would be hanged :)
-Your word has",length_w, "characters", W_display, 
+If you are unable to guess the word before using up all seven attemtps the men would be hanged :( 
+To exit the game type Exit when being promted your guess.
+Your word has",length_w, "characters", split_g, 
 "Have fun!")
 
 i <- 1
-
-while(i < 8) {
+#i is set to 1 to in the beginning of the while loop
+while(i < 8){
   guess <- readline("Please make your guess:")
-  if (grepl(guess,word,ignore.case = TRUE)){
+  if (guess == "Exit"){
+    break #This is if someone got trapped and wanted to leave.
+  }
+  if (grepl(paste(split_w,collapse=";"), paste(split_g,collapse=";"), ignore.case = TRUE)){
+    cat("You have found the word!") #if all empty lots in split_g has been filled, the answer would be revealed
+    break
+  }
+  if (grepl(paste(split_w,collapse=";"), guess, ignore.case = TRUE)){
+    cat("You have found the word!") #if someone found the word!
+    break 
+  }else if (guess != word & nchar(guess) > 1){
+    cat("You have inserted more than one letter and guessed the wrong word. Please try again.")
+    #if someone inserted the wrong word.
+  }else if (grepl(guess,word,ignore.case = TRUE)){
     locate <- grep(guess, split_w, ignore.case = TRUE)
     split_g <- replace(split_g, locate, guess)
     cat(split_g, "Your guess is correct,it is in the word.")
-    }else if(grepl(guess,word) == FALSE){
+    #the guess is in the word, grep() gives the indices 
+    #replace takes those indices and replaces blank spots in split_g with the guessed letter
+  }else if(grepl(guess,word,ignore.case = TRUE) == FALSE){
       cat(guess, "is not in the word, you have",7 - i, "attempts left")
-      i <- i + 1
-    }else if(guess == word){
-      cat("You have found the word! The word is", word)
-    }
+      i <- i + 1 #If the guessed letter is not in the actual word, 1- attempts are left 
+  }
 }
-  
-cat("You have depleted all 7 attempts, the word was",word,".Down for another round?")
+
+cat("The word was",word," .Down for another round?")
+
+#Yayyy! Thank you for reviewing my R script
 
