@@ -7,6 +7,11 @@
 ## MG: I also notice that your input confuses some special characters like spaces,
 ##     \, and | doesn't work.
 
+## MG: To fix the special characters issue, you can explore the fixed parameter in
+##     the grepl and grep functions and setting it to TRUE. This treats the pattern 
+##     as a fixed string and avoids the issue of special characters being interpreted 
+##     as part of a regular expression.
+
 allword<- unlist(read.csv("Words.txt"))
 #Reading the dictionary file that is stored in the same folder/repo
 #sample() cannot process list as an input we therefore had to unlist the dictionary
