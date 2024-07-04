@@ -1,5 +1,12 @@
 #Hangman Project 
 
+## MG: Great work! I tried running your game and was able to play it. However,
+##     I noticed that after guessing all the letters correctly, It asks for another
+##     guess before congratulating it.
+
+## MG: I also notice that your input confuses some special characters like spaces,
+##    \, and | doesn't work.
+
 allword<- unlist(read.csv("Words.txt"))
 #Reading the dictionary file that is stored in the same folder/repo
 #sample() cannot process list as an input we therefore had to unlist the dictionary
