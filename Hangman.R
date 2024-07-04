@@ -44,21 +44,30 @@ i <- 1
 #i is set to 1 to in the beginning of the while loop
 while(i < 8){
   guess <- readline("Please make your guess:")
+  ## MG: Its nice that you added this line because sometimes players just want to know
+  ##     the answer immediately and gets frustrated after a few attempts
   if (guess == "Exit"){
     break #This is if someone got trapped and wanted to leave.
   }
+  ## MG: Nice too for using an if loop to check if the answer has been found and 
+  ##     exit the loop
   if (grepl(paste(split_w,collapse=";"), paste(split_g,collapse=";"), ignore.case = TRUE)){
     cat("You have found the word!") #if all empty lots in split_g has been filled, the answer would be revealed
-    break
+    break 
   }
   if (grepl(paste(split_w,collapse=";"), guess, ignore.case = TRUE)){
     cat("You have found the word!") #if someone found the word!
     break 
+  ## MG: I think guess != word is uneccessary because the word is more than 1 letter
+  ##     and the guess is ideally a single letter, so the guess will not be the same
+  ##     as the word (unless you allow for the player to guess the word directly, then
+  ##     ignore this comment)
   }else if (guess != word & nchar(guess) > 1){
     cat("You have inserted more than one letter and guessed the wrong word. Please try again.")
     #if someone inserted the wrong word.
   }else if (grepl(guess,word,ignore.case = TRUE)){
     locate <- grep(guess, split_w, ignore.case = TRUE)
+    ## MG: Great use of the replace() function to update user's display
     split_g <- replace(split_g, locate, guess)
     cat(split_g, "Your guess is correct,it is in the word.")
     #the guess is in the word, grep() gives the indices 
