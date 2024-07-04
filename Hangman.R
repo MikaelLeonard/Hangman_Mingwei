@@ -43,6 +43,17 @@ Your word has",length_w, "characters", split_g,
 i <- 1
 #i is set to 1 to in the beginning of the while loop
 while(i < 8){
+  ## MG: Because you ask the user to make their guess on top of this loop, it will run
+  ##     this prompt again in the last round so that after the user enters the last word,
+  ##     they are asked "Please make your guess:" one more time.
+  
+  ## MG: You can instead put the if condition to check whether the split_w and split_g
+  ##     are similar on top of this loop, before asking the user to make their guess
+  
+## MG  if (grepl(paste(split_w, collapse = ";"), paste(split_g, collapse = ";"), ignore.case = TRUE)) {
+##      cat("You have found the word!") # if all empty slots in split_g have been filled, the answer would be revealed
+##     break 
+##    }
   guess <- readline("Please make your guess:")
   ## MG: Its nice that you added this line because sometimes players just want to know
   ##     the answer immediately and gets frustrated after a few attempts
